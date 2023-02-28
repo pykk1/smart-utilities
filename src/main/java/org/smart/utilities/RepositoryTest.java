@@ -13,7 +13,7 @@ public class RepositoryTest {
 
     public void save(TestDTO dto) {
         var entity = new TestEntity();
-        entity.setStringuMeu(dto.getStringuMeu());
+        entity.setString(dto.getString());
         entity.setId(dto.getId());
 
         jpaTest.save(entity);

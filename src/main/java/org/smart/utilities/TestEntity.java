@@ -15,5 +15,5 @@ public class TestEntity {
     private Integer id;
 
     @Column(name = "test")
-    private String stringuMeu;
+    private String string;
 }
