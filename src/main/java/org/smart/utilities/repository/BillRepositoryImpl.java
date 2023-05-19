@@ -1,6 +1,5 @@
 package org.smart.utilities.repository;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import org.smart.utilities.dto.BillType;
@@ -50,6 +49,6 @@ public class BillRepositoryImpl implements BillRepository{
   public List<BillEntity> findAllBills(Boolean paid, UserEntity user) {
     Assert.notNull(paid, "Paid cannot be null");
     Assert.notNull(user, "User cannot be null");
-    return jpaBillRepository.findByPaidAndUser(paid, user);
+    return jpaBillRepository.findByPaidAndUserOrderByDueDateAsc(paid, user);
   }
 }

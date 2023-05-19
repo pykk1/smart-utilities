@@ -18,5 +18,5 @@ public interface JpaBillRepository extends JpaRepository<BillEntity, Integer> {
   Optional<BillEntity> findFirstByBillTypeAndUserOrderByToDateDesc(BillType billType,
       UserEntity user);
 
-  List<BillEntity> findByPaidAndUser(Boolean paid, UserEntity user);
+  List<BillEntity> findByPaidAndUserOrderByDueDateAsc(Boolean paid, UserEntity user);
 }

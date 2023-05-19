@@ -2,11 +2,8 @@ package org.smart.utilities.service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -75,10 +72,10 @@ public class BillService {
     var entity = converter.convertToEntity(bill);
     entity.setUser(userEntity);
     entity.setPrice(Math.round(entity.getUnits() * entity.getCostPerUnit() * 100) / 100.0);
-    entity.setIssueDate(bill.getIssueDate().atOffset(ZoneOffset.UTC).withHour(12).withMinute(0).withSecond(0)
+    entity.setIssueDate(
+        bill.getIssueDate().atOffset(ZoneOffset.UTC).withHour(12).withMinute(0).withSecond(0)
             .truncatedTo(ChronoUnit.SECONDS).toInstant());
     setDates(bill, entity);
-
 
     return converter.convertToDTO(billRepository.save(entity));
   }
