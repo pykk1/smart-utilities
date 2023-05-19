@@ -28,10 +28,28 @@ public class UserEntity {
   private Integer id;
 
   @Column
+  private String firstName;
+
+  @Column
+  private String lastName;
+
+  @Column
   private String username;
 
   @Column
   private String password;
+
+  @Column(name = "client_code")
+  private Integer clientCode;
+
+  @Column(name = "billing_code")
+  private Integer billingCode;
+
+  @Column
+  private String address;
+
+  @Column
+  private String email;
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

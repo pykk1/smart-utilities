@@ -24,7 +24,16 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain)
       throws ServletException, IOException {
-    String token = getJWTFromRequest(request);
+
+    if (request.getMethod().equals("OPTIONS")) {
+      response.setStatus(HttpServletResponse.SC_OK);
+      response.setHeader("Access-Control-Allow-Origin", "*");
+      response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+      response.setHeader("Access-Control-Max-Age", "3600");
+      response.setHeader("Access-Control-Allow-Headers", "authorization, content-type, xsrf-token");
+    } else{
+
+    String token = tokenGenerator.getJWTFromRequest(request);
 
     if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
       var username = tokenGenerator.getUsernameFromJWT(token);
@@ -35,15 +44,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
       authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
-    filterChain.doFilter(request, response);
-  }
-
-  private String getJWTFromRequest(HttpServletRequest request) {
-    String bearerToken = request.getHeader("Authorization");
-    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-      return bearerToken.substring(7);
-    }
-
-    return null;
+    filterChain.doFilter(request, response);}
   }
 }
