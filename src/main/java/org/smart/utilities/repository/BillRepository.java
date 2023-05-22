@@ -17,4 +17,6 @@ public interface BillRepository {
   Optional<BillEntity> getLastBill(BillType billType, UserEntity user);
 
   List<BillEntity> findAllBills(Boolean paid, UserEntity user);
+
+  Optional<BillEntity> findById(Integer billId);
 }

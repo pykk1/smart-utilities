@@ -17,6 +17,7 @@ import org.smart.utilities.repository.UserRepository;
 import org.smart.utilities.security.JWTGenerator;
 import org.smart.utilities.validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -119,4 +120,9 @@ public class BillService {
         .truncatedTo(ChronoUnit.SECONDS).toInstant());
   }
 
+  public void payBill(Integer billId) throws NotFoundException {
+    var billEntity = billRepository.findById(billId).orElseThrow(NotFoundException::new);
+    billEntity.setPaid(true);
+    billRepository.save(billEntity);
+  }
 }

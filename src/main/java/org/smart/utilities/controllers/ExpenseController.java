@@ -7,7 +7,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.smart.utilities.dto.ExpenseDTO;
 import org.smart.utilities.dto.ExpenseType;
-import org.smart.utilities.entity.AttachmentEntity;
 import org.smart.utilities.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -50,12 +49,20 @@ public class ExpenseController {
     return expenseService.createExpense(expenseDTO, attachments, request);
   }
 
+  @PostMapping("expense/pay/{expenseId}")
+  @ResponseStatus(HttpStatus.OK)
+  public void payExpense(@PathVariable Integer expenseId) throws Exception {
+
+    expenseService.payExpense(expenseId);
+  }
+
   @GetMapping("/expense/attachment/{expenseId}/{attachmentId}")
-  public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable Integer expenseId,
+  public ResponseEntity<ByteArrayResource> downloadAttachment(@PathVariable Integer expenseId,
       @PathVariable Integer attachmentId) throws NotFoundException {
-    AttachmentEntity attachmentEntity = expenseService.getExpenseAttachment(expenseId,
+
+    var attachmentEntity = expenseService.downloadAttachment(expenseId,
         attachmentId);
-    ByteArrayResource resource = new ByteArrayResource(attachmentEntity.getData());
+    var resource = new ByteArrayResource(attachmentEntity.getData());
 
     return ResponseEntity.ok()
         .contentType(MediaType.parseMediaType(attachmentEntity.getFileType()))
@@ -73,8 +80,8 @@ public class ExpenseController {
 
   @GetMapping("expenses/types")
   @ResponseStatus(HttpStatus.OK)
-  public ExpenseType[] getExpenseTypes() {
-    return ExpenseType.values();
+  public String[] getExpenseTypes() {
+    return ExpenseType.labels();
   }
 }
 

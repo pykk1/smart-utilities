@@ -2,7 +2,6 @@ package org.smart.utilities.entity;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.*;
 import lombok.Getter;
@@ -38,7 +37,7 @@ public class ExpenseEntity {
   private Double price;
 
   @Column
-  private String notes;
+  private String note;
 
   @Column
   private Instant date;

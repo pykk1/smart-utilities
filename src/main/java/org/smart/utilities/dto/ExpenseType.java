@@ -1,5 +1,7 @@
 package org.smart.utilities.dto;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
@@ -15,6 +17,7 @@ public enum ExpenseType {
   MAINTENANCE("Maintenance"),
   OTHER("Other");
 
+  @JsonValue
   private final String label;
 
   ExpenseType(String label) {
@@ -28,6 +31,12 @@ public enum ExpenseType {
       }
     }
     throw new IllegalArgumentException("No expense type with label " + label + " found");
+  }
+
+  public static String[] labels() {
+    return Arrays.stream(ExpenseType.values())
+        .map(ExpenseType::getLabel)
+        .toArray(String[]::new);
   }
 
 }

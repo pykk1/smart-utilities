@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 @Repository
-public class BillRepositoryImpl implements BillRepository{
+public class BillRepositoryImpl implements BillRepository {
 
   private final JpaBillRepository jpaBillRepository;
 
@@ -50,5 +50,11 @@ public class BillRepositoryImpl implements BillRepository{
     Assert.notNull(paid, "Paid cannot be null");
     Assert.notNull(user, "User cannot be null");
     return jpaBillRepository.findByPaidAndUserOrderByDueDateAsc(paid, user);
+  }
+
+  @Override
+  public Optional<BillEntity> findById(Integer id) {
+    Assert.notNull(id, "Id cannot be null");
+    return jpaBillRepository.findById(id);
   }
 }

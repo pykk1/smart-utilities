@@ -6,11 +6,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
-import org.smart.utilities.dto.AttachmentDTO;
 import org.smart.utilities.dto.ExpenseDTO;
 import org.smart.utilities.entity.AttachmentEntity;
 import org.smart.utilities.entity.ExpenseEntity;
 import org.smart.utilities.entity.converters.Converter;
+import org.smart.utilities.repository.AttachmentRepository;
 import org.smart.utilities.repository.ExpenseRepository;
 import org.smart.utilities.repository.UserRepository;
 import org.smart.utilities.security.JWTGenerator;
@@ -29,18 +29,18 @@ public class ExpenseService {
   private final Converter<ExpenseDTO, ExpenseEntity> converter;
   private final UserRepository userRepository;
   private final JWTGenerator jwtGenerator;
-  private final Converter<AttachmentDTO, AttachmentEntity> attachmentConverter;
+  private final AttachmentRepository attachmentRepository;
 
   @Autowired
   public ExpenseService(Validator<ExpenseDTO> validator, ExpenseRepository expenseRepository,
       Converter<ExpenseDTO, ExpenseEntity> converter, UserRepository userRepository,
-      JWTGenerator jwtGenerator, Converter<AttachmentDTO, AttachmentEntity> attachmentConverter) {
+      JWTGenerator jwtGenerator, AttachmentRepository attachmentRepository) {
     this.validator = validator;
     this.expenseRepository = expenseRepository;
     this.converter = converter;
     this.userRepository = userRepository;
     this.jwtGenerator = jwtGenerator;
-    this.attachmentConverter = attachmentConverter;
+    this.attachmentRepository = attachmentRepository;
   }
 
   public ExpenseDTO createExpense(ExpenseDTO expense, List<MultipartFile> attachments,
@@ -68,14 +68,13 @@ public class ExpenseService {
   }
 
   @Transactional
-  public AttachmentEntity getExpenseAttachment(Integer expenseId, Integer attachmentId) throws NotFoundException {
-    ExpenseEntity expenseEntity = expenseRepository.findById(expenseId).orElseThrow(NotFoundException::new);
-    return expenseEntity.getAttachments().stream()
-        .filter(attachment -> attachment.getId().equals(attachmentId))
-        .findFirst()
+  public AttachmentEntity downloadAttachment(Integer expenseId, Integer attachmentId)
+      throws NotFoundException {
+    return attachmentRepository.findByIdAndExpenseId(attachmentId, expenseId)
         .orElseThrow(NotFoundException::new);
   }
 
+  @Transactional
   public List<ExpenseDTO> getExpenses(HttpServletRequest request, Boolean paid) throws Exception {
     var userEntity = userRepository.findByUsername(jwtGenerator.getUsernameFromRequest(request))
         .orElseThrow(Exception::new);
@@ -86,4 +85,9 @@ public class ExpenseService {
         .collect(Collectors.toList());
   }
 
+  public void payExpense(Integer expenseId) throws NotFoundException {
+    var expenseEntity = expenseRepository.findById(expenseId).orElseThrow(NotFoundException::new);
+    expenseEntity.setPaid(true);
+    expenseRepository.save(expenseEntity);
+  }
 }
