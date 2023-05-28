@@ -32,7 +32,13 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
   }
 
   @Override
-  public Optional<ExpenseEntity> findById(Integer id) {
+  public List<ExpenseEntity> getAll(Boolean paid) {
+    Assert.notNull(paid, "Paid cannot be null");
+    return jpaExpenseRepository.findByPaidOrderByDateDesc(paid);
+  }
+
+  @Override
+  public Optional<ExpenseEntity> getById(Integer id) {
     Assert.notNull(id, "Id cannot be null");
     return jpaExpenseRepository.findById(id);
   }

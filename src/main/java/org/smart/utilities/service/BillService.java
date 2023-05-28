@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.smart.utilities.dto.BillDTO;
 import org.smart.utilities.dto.BillType;
 import org.smart.utilities.entity.BillEntity;
-import org.smart.utilities.entity.UserEntity;
 import org.smart.utilities.entity.converters.Converter;
 import org.smart.utilities.repository.BillRepository;
 import org.smart.utilities.repository.UserRepository;
@@ -59,13 +58,13 @@ public class BillService {
     return converter.convertToDTO(billRepository.save(entity));
   }
 
-  public List<BillDTO> getAllBills(Boolean paid) {
-    return billRepository.getAllBills(paid).stream()
+  public List<BillDTO> getAll(Boolean paid) {
+    return billRepository.getAll(paid).stream()
         .map(converter::convertToDTO)
         .collect(Collectors.toList());
   }
 
-  public BillDTO createBill(BillDTO bill, HttpServletRequest request) throws Exception {
+  public BillDTO create(BillDTO bill, HttpServletRequest request) throws Exception {
     validator.validate(bill);
     var userEntity = userRepository.findByUsername(jwtGenerator.getUsernameFromRequest(request))
         .orElseThrow(Exception::new);
@@ -81,31 +80,22 @@ public class BillService {
     return converter.convertToDTO(billRepository.save(entity));
   }
 
-  private void calculateIndex(BillDTO bill, UserEntity userEntity, BillEntity entity) {
-    var lastBill = billRepository.getLastBill(bill.getBillType(), userEntity);
-    if (lastBill.isPresent()) {
-      entity.setIndex(lastBill.get().getIndex() + entity.getUnits().intValue());
-    } else {
-      entity.setIndex(entity.getUnits().intValue());
-    }
-  }
-
-  public List<BillDTO> getBillsPerType(String billType, Boolean paid, HttpServletRequest request)
+  public List<BillDTO> getPerType(String billType, Boolean paid, HttpServletRequest request)
       throws Exception {
     var userEntity = userRepository.findByUsername(jwtGenerator.getUsernameFromRequest(request))
         .orElseThrow(Exception::new);
 
-    return billRepository.getBillsPerTypeAndPaid(BillType.fromString(billType), paid, userEntity)
+    return billRepository.getByTypeAndPaid(BillType.fromString(billType), paid, userEntity)
         .stream()
         .map(converter::convertToDTO)
         .collect(Collectors.toList());
   }
 
-  public List<BillDTO> findAllBills(HttpServletRequest request, Boolean paid) throws Exception {
+  public List<BillDTO> getAll(HttpServletRequest request, Boolean paid) throws Exception {
     var userEntity = userRepository.findByUsername(jwtGenerator.getUsernameFromRequest(request))
         .orElseThrow(Exception::new);
 
-    return billRepository.findAllBills(paid, userEntity)
+    return billRepository.getAll(paid, userEntity)
         .stream()
         .map(converter::convertToDTO)
         .collect(Collectors.toList());
@@ -120,8 +110,8 @@ public class BillService {
         .truncatedTo(ChronoUnit.SECONDS).toInstant());
   }
 
-  public void payBill(Integer billId) throws NotFoundException {
-    var billEntity = billRepository.findById(billId).orElseThrow(NotFoundException::new);
+  public void pay(Integer billId) throws NotFoundException {
+    var billEntity = billRepository.getById(billId).orElseThrow(NotFoundException::new);
     billEntity.setPaid(true);
     billRepository.save(billEntity);
   }

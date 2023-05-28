@@ -40,20 +40,20 @@ public class ExpenseController {
 
   @PostMapping("expense")
   @ResponseStatus(HttpStatus.CREATED)
-  public ExpenseDTO createExpense(@RequestPart("expense") String expense,
+  public ExpenseDTO create(@RequestPart("expense") String expense,
       @RequestPart(value = "attachments", required = false) List<MultipartFile> attachments,
       HttpServletRequest request) throws Exception {
 
     var expenseDTO = objectMapper.readValue(expense, ExpenseDTO.class);
     expenseDTO.setDate(Instant.now());
-    return expenseService.createExpense(expenseDTO, attachments, request);
+    return expenseService.create(expenseDTO, attachments, request);
   }
 
   @PostMapping("expense/pay/{expenseId}")
   @ResponseStatus(HttpStatus.OK)
-  public void payExpense(@PathVariable Integer expenseId) throws Exception {
+  public void pay(@PathVariable Integer expenseId) throws Exception {
 
-    expenseService.payExpense(expenseId);
+    expenseService.pay(expenseId);
   }
 
   @GetMapping("/expense/attachment/{expenseId}/{attachmentId}")
@@ -75,7 +75,13 @@ public class ExpenseController {
   @ResponseStatus(HttpStatus.OK)
   public List<ExpenseDTO> getAll(@RequestParam("paid") Boolean paid, HttpServletRequest request)
       throws Exception {
-    return expenseService.getExpenses(request, paid);
+    return expenseService.getAll(request, paid);
+  }
+
+  @GetMapping("/admin/expenses")
+  @ResponseStatus(HttpStatus.OK)
+  public List<ExpenseDTO> getAll(@RequestParam("paid") Boolean paid) {
+    return expenseService.getAll(paid);
   }
 
   @GetMapping("expenses/types")

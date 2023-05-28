@@ -26,43 +26,37 @@ public class BillController {
     this.billService = billService;
   }
 
-  @PostMapping("admin/bill")
-  @ResponseStatus(HttpStatus.CREATED)
-  public BillDTO createAdminBill(@RequestBody BillDTO bill) {
-    return billService.createAdminBill(bill);
-  }
-
   @GetMapping("admin/bills")
   @ResponseStatus(HttpStatus.OK)
-  public List<BillDTO> getAllBills(@RequestParam("paid") Boolean paid) {
-    return billService.getAllBills(paid);
+  public List<BillDTO> getAll(@RequestParam("paid") Boolean paid) {
+    return billService.getAll(paid);
   }
 
   @PostMapping("bill")
   @ResponseStatus(HttpStatus.CREATED)
-  public BillDTO createBill(@RequestBody BillDTO bill, HttpServletRequest request)
+  public BillDTO create(@RequestBody BillDTO bill, HttpServletRequest request)
       throws Exception {
-    return billService.createBill(bill, request);
+    return billService.create(bill, request);
   }
 
   @PostMapping("bill/pay/{billId}")
   @ResponseStatus(HttpStatus.OK)
-  public void payBill(@PathVariable Integer billId) throws Exception {
-    billService.payBill(billId);
+  public void pay(@PathVariable Integer billId) throws Exception {
+    billService.pay(billId);
   }
 
   @GetMapping("bills")
   @ResponseStatus(HttpStatus.OK)
-  public List<BillDTO> getBillsPerType(@RequestParam("billType") String billType,
+  public List<BillDTO> getPerType(@RequestParam("billType") String billType,
       @RequestParam("paid") Boolean paid, HttpServletRequest request)
       throws Exception {
-    return billService.getBillsPerType(billType, paid, request);
+    return billService.getPerType(billType, paid, request);
   }
 
   @GetMapping("bills/all")
   @ResponseStatus(HttpStatus.OK)
-  public List<BillDTO> getAllBills(@RequestParam("paid") Boolean paid, HttpServletRequest request)
+  public List<BillDTO> getAll(@RequestParam("paid") Boolean paid, HttpServletRequest request)
       throws Exception {
-    return billService.findAllBills(request, paid);
+    return billService.getAll(request, paid);
   }
 }

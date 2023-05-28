@@ -1,7 +1,6 @@
 package org.smart.utilities.repository;
 
 import java.util.List;
-import java.util.Optional;
 import org.smart.utilities.dto.BillType;
 import org.smart.utilities.entity.BillEntity;
 import org.smart.utilities.entity.UserEntity;
@@ -9,14 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaBillRepository extends JpaRepository<BillEntity, Integer> {
 
-  List<BillEntity> findByPaid(Boolean paid);
+  List<BillEntity> findByPaidOrderByDueDateAsc(Boolean paid);
 
-  List<BillEntity> findByBillTypeAndUserAndPaid(BillType billType, UserEntity user, Boolean paid);
+  List<BillEntity> findByPaidOrderByIssueDateDesc(Boolean paid);
 
-//  List<BillEntity> findByBillTypeAndUser(BillType billType, UserEntity user);
+  List<BillEntity> findByBillTypeAndUserAndPaidOrderByDueDateAsc(BillType billType, UserEntity user, Boolean paid);
 
-  Optional<BillEntity> findFirstByBillTypeAndUserOrderByToDateDesc(BillType billType,
-      UserEntity user);
+  List<BillEntity> findByBillTypeAndUserAndPaidOrderByIssueDateDesc(BillType billType, UserEntity user, Boolean paid);
 
   List<BillEntity> findByPaidAndUserOrderByDueDateAsc(Boolean paid, UserEntity user);
+
+  List<BillEntity> findByPaidAndUserOrderByIssueDateDesc(Boolean paid, UserEntity user);
 }

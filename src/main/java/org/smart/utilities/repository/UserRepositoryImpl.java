@@ -2,7 +2,6 @@ package org.smart.utilities.repository;
 
 import java.util.List;
 import java.util.Optional;
-import org.smart.utilities.entity.RoleEntity;
 import org.smart.utilities.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

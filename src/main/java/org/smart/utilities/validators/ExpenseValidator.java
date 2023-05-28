@@ -2,7 +2,6 @@ package org.smart.utilities.validators;
 
 import static java.util.Objects.isNull;
 
-import org.smart.utilities.dto.BillDTO;
 import org.smart.utilities.dto.ExpenseDTO;
 import org.smart.utilities.exceptions.BadRequestException;
 import org.springframework.stereotype.Component;

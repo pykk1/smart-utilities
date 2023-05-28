@@ -10,13 +10,11 @@ public interface BillRepository {
 
   BillEntity save(BillEntity entity);
 
-  List<BillEntity> getAllBills(Boolean paid);
+  List<BillEntity> getAll(Boolean paid);
 
-  List<BillEntity> getBillsPerTypeAndPaid(BillType billType, Boolean paid, UserEntity user);
+  List<BillEntity> getByTypeAndPaid(BillType billType, Boolean paid, UserEntity user);
 
-  Optional<BillEntity> getLastBill(BillType billType, UserEntity user);
+  List<BillEntity> getAll(Boolean paid, UserEntity user);
 
-  List<BillEntity> findAllBills(Boolean paid, UserEntity user);
-
-  Optional<BillEntity> findById(Integer billId);
+  Optional<BillEntity> getById(Integer billId);
 }

@@ -24,7 +24,7 @@ public class UsersController {
 
   @GetMapping("user")
   @ResponseStatus(HttpStatus.OK)
-  public List<UserDTO> getAllUsers() {
+  public List<UserDTO> getAll() {
     return customUserDetailsService.getAllCustomers();
   }
 

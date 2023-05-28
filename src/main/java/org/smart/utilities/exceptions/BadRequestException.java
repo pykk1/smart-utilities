@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class BadRequestException extends RuntimeException{
+public class BadRequestException extends RuntimeException {
+
   private String message;
 }

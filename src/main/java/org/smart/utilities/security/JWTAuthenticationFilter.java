@@ -31,19 +31,20 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
       response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
       response.setHeader("Access-Control-Max-Age", "3600");
       response.setHeader("Access-Control-Allow-Headers", "authorization, content-type, xsrf-token");
-    } else{
+    } else {
 
-    String token = tokenGenerator.getJWTFromRequest(request);
+      String token = tokenGenerator.getJWTFromRequest(request);
 
-    if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
-      var username = tokenGenerator.getUsernameFromJWT(token);
-      var userDetails = customUserDetailsService.loadUserByUsername(username);
-      var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
-          userDetails.getAuthorities());
+      if (StringUtils.hasText(token) && tokenGenerator.validateToken(token)) {
+        var username = tokenGenerator.getUsernameFromJWT(token);
+        var userDetails = customUserDetailsService.loadUserByUsername(username);
+        var authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
+            userDetails.getAuthorities());
 
-      authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-      SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+      }
+      filterChain.doFilter(request, response);
     }
-    filterChain.doFilter(request, response);}
   }
 }

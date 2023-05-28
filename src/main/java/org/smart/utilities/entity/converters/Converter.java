@@ -6,7 +6,9 @@ package org.smart.utilities.entity.converters;
  * @param <D> DTO
  * @param <E> Entity
  */
-public interface Converter<D, E>{
+public interface Converter<D, E> {
+
   E convertToEntity(D dto);
+
   D convertToDTO(E entity);
 }

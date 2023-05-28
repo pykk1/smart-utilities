@@ -43,7 +43,7 @@ public class ExpenseService {
     this.attachmentRepository = attachmentRepository;
   }
 
-  public ExpenseDTO createExpense(ExpenseDTO expense, List<MultipartFile> attachments,
+  public ExpenseDTO create(ExpenseDTO expense, List<MultipartFile> attachments,
       HttpServletRequest request) throws Exception {
     validator.validate(expense);
     var userEntity = userRepository.findByUsername(jwtGenerator.getUsernameFromRequest(request))
@@ -75,7 +75,7 @@ public class ExpenseService {
   }
 
   @Transactional
-  public List<ExpenseDTO> getExpenses(HttpServletRequest request, Boolean paid) throws Exception {
+  public List<ExpenseDTO> getAll(HttpServletRequest request, Boolean paid) throws Exception {
     var userEntity = userRepository.findByUsername(jwtGenerator.getUsernameFromRequest(request))
         .orElseThrow(Exception::new);
 
@@ -85,8 +85,16 @@ public class ExpenseService {
         .collect(Collectors.toList());
   }
 
-  public void payExpense(Integer expenseId) throws NotFoundException {
-    var expenseEntity = expenseRepository.findById(expenseId).orElseThrow(NotFoundException::new);
+  @Transactional
+  public List<ExpenseDTO> getAll(Boolean paid) {
+    return expenseRepository.getAll(paid)
+        .stream()
+        .map(converter::convertToDTO)
+        .collect(Collectors.toList());
+  }
+
+  public void pay(Integer expenseId) throws NotFoundException {
+    var expenseEntity = expenseRepository.getById(expenseId).orElseThrow(NotFoundException::new);
     expenseEntity.setPaid(true);
     expenseRepository.save(expenseEntity);
   }

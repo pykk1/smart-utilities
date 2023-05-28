@@ -26,34 +26,40 @@ public class BillRepositoryImpl implements BillRepository {
   }
 
   @Override
-  public List<BillEntity> getAllBills(Boolean paid) {
+  public List<BillEntity> getAll(Boolean paid) {
     Assert.notNull(paid, "Paid cannot be null");
-    return jpaBillRepository.findByPaid(paid);
+
+    if (paid) {
+      return jpaBillRepository.findByPaidOrderByIssueDateDesc(paid);
+    }
+    return jpaBillRepository.findByPaidOrderByDueDateAsc(paid);
   }
 
   @Override
-  public List<BillEntity> getBillsPerTypeAndPaid(BillType billType, Boolean paid, UserEntity user) {
+  public List<BillEntity> getByTypeAndPaid(BillType billType, Boolean paid, UserEntity user) {
     Assert.notNull(billType, "BillType cannot be null");
     Assert.notNull(user, "User cannot be null");
-    return jpaBillRepository.findByBillTypeAndUserAndPaid(billType, user, paid);
+
+    if (paid) {
+      return jpaBillRepository.findByBillTypeAndUserAndPaidOrderByIssueDateDesc(billType, user,
+          paid);
+    }
+    return jpaBillRepository.findByBillTypeAndUserAndPaidOrderByDueDateAsc(billType, user, paid);
   }
 
   @Override
-  public Optional<BillEntity> getLastBill(BillType billType, UserEntity user) {
-    Assert.notNull(billType, "BillType cannot be null");
-    Assert.notNull(user, "User cannot be null");
-    return jpaBillRepository.findFirstByBillTypeAndUserOrderByToDateDesc(billType, user);
-  }
-
-  @Override
-  public List<BillEntity> findAllBills(Boolean paid, UserEntity user) {
+  public List<BillEntity> getAll(Boolean paid, UserEntity user) {
     Assert.notNull(paid, "Paid cannot be null");
     Assert.notNull(user, "User cannot be null");
+
+    if (paid) {
+      return jpaBillRepository.findByPaidAndUserOrderByIssueDateDesc(paid, user);
+    }
     return jpaBillRepository.findByPaidAndUserOrderByDueDateAsc(paid, user);
   }
 
   @Override
-  public Optional<BillEntity> findById(Integer id) {
+  public Optional<BillEntity> getById(Integer id) {
     Assert.notNull(id, "Id cannot be null");
     return jpaBillRepository.findById(id);
   }

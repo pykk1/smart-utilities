@@ -11,5 +11,7 @@ public interface ExpenseRepository {
 
   List<ExpenseEntity> getAll(Boolean paid, UserEntity user);
 
-  Optional<ExpenseEntity> findById(Integer id);
+  List<ExpenseEntity> getAll(Boolean paid);
+
+  Optional<ExpenseEntity> getById(Integer id);
 }
