@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: hiwvbfydee
     password: 4503A4244D7830FB$
-    url: jdbc:postgresql://smartutilities-db-server.postgres.database.azure.com:5432/?user=hiwvbfydee&password=4503A4244D7830FB$&sslmode=require;database=smartutilities-db
+    url: jdbc:postgresql://smartutilities-db-server.postgres.database.azure.com:5432/?user=hiwvbfydee&password=4503A4244D7830FB$&sslmode=require
   jpa:
     show-sql: true
     generate-ddl: true
