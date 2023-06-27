@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: 123
-    url: jdbc:postgresql://localhost/smart_utilities_data
+    username: hiwvbfydee
+    password: 4503A4244D7830FB$
+    url: jdbc:postgresql://smartutilities-db-server.postgres.database.azure.com:5432/?user=hiwvbfydee&password=4503A4244D7830FB$&sslmode=require;database=smartutilities-db
   jpa:
     show-sql: true
     generate-ddl: true
