@@ -24,27 +24,27 @@ public class SecurityConfig {
     this.authEntryPoint = authEntryPoint;
   }
 
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    return http
-        .cors().and()
-        .csrf().disable()
-        .exceptionHandling()
-        .authenticationEntryPoint(authEntryPoint)
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .authorizeRequests()
-        .antMatchers("/api/auth/**").permitAll()
-        .antMatchers("/api/admin/**").hasAuthority("ADMIN")
-        .anyRequest().authenticated()
-        .and()
-        .httpBasic()
-        .and()
-        .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-        .build();
-  }
+//  @Bean
+//  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//    return http
+//        .cors().and()
+//        .csrf().disable()
+//        .exceptionHandling()
+//        .authenticationEntryPoint(authEntryPoint)
+//        .and()
+//        .sessionManagement()
+//        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        .and()
+//        .authorizeRequests()
+//        .antMatchers("/api/auth/**").permitAll()
+//        .antMatchers("/api/admin/**").hasAuthority("ADMIN")
+//        .anyRequest().authenticated()
+//        .and()
+//        .httpBasic()
+//        .and()
+//        .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//        .build();
+//  }
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
