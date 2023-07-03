@@ -10,8 +10,8 @@ public class CorsConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/api/**")
-        .allowedOrigins("http://localhost:3000")
-        .allowedMethods("GET", "POST", "PUT", "DELETE")
+        .allowedOrigins("https://smart-utilities-7e9e80ea22c0.herokuapp.com/")
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders("*")
         .allowCredentials(true)
         .maxAge(3600);
