@@ -10,3 +10,7 @@ spring:
     hibernate:
       ddl-auto: update
     database: postgresql
+    servlet:
+      multipart:
+        max-file-size: 20MB
+        max-request-size: 50MB
